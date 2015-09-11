@@ -10,11 +10,12 @@ object GFPackagerPlugin extends AutoPlugin {
   override def trigger = allRequirements
 
   val COMMIT_SIZE = 6
+  val relPat = "release/(.*)".r
+  val featPat = "feature/(.*)".r
 
   override lazy val projectSettings = Seq(
     artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
       val commit = "git rev-parse --verify HEAD".!! take(COMMIT_SIZE)
-      val relPat = "release/(.*)".r
       "git rev-parse --abbrev-ref HEAD".!! trim match {
         case "master"  => {
           val masterVer = ("git describe --always --tag".!!).trim
@@ -31,8 +32,6 @@ object GFPackagerPlugin extends AutoPlugin {
     },
     version := {  // set version for built artifacts, including docker
       val commit = "git rev-parse --verify HEAD".!! take(COMMIT_SIZE)
-      val relPat = "release/(.*)".r
-      val featPat = "feature/(.*)".r
       "git rev-parse --abbrev-ref HEAD".!! trim match {
         case "master"  => "git describe --always --tag".!! trim
         case "develop" => commit+"_SNAPSHOT"

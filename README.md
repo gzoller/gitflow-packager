@@ -17,3 +17,13 @@ For master and hotfix branches the '1.2' version designation comes from the git 
 
 If you are building Docker images with sbt-native-packager then the Docker images created will follow a similar convention, as shown.
 
+## Use
+
+Include it in your projects by adding the following to your project's plugins.sbt file:
+
+    addSbtPlugin("co.blocke" % "gitflow-packager" % "1.0.0")
+
+Remember *not* to define the version setting in your project!  This plugin will do that for you.  When you want to cut a labeled release, do that with git-flow (or hubflow) and the plugin will key off that version:
+
+    $ git hf release start 1.2
+
