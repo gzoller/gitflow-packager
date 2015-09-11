@@ -10,6 +10,12 @@ scalacOptions in Compile ++= Seq("-deprecation", "-target:jvm-1.6")
 
 publishMavenStyle := true
 
-version := "1.0.0"
-
 addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.0.5-M1")
+
+bintrayOrganization := Some("blocke")
+
+bintrayReleaseOnPublish in ThisBuild := false
+
+licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
+
+bintrayPackageLabels := Seq("sbt", "sbt-plugin", "git-flow")
