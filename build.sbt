@@ -2,6 +2,8 @@ sbtPlugin := true
 
 scalaVersion in Global := "2.10.5"
 
+version := "0.1"
+
 name := "gitflow-packager"
 
 organization := "co.blocke"
@@ -17,5 +19,7 @@ bintrayOrganization := Some("blocke")
 bintrayReleaseOnPublish in ThisBuild := false
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
+
+bintrayRepository := "releases"
 
 bintrayPackageLabels := Seq("sbt", "sbt-plugin", "git-flow")
