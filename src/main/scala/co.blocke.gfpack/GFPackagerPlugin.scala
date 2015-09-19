@@ -28,6 +28,7 @@ object GFPackagerPlugin extends AutoPlugin {
           artifact.name + s"-$masterVer-PATCH." + artifact.extension
         }
         case relPat(r) => artifact.name + s"-$r-$commit-RC." + artifact.extension
+        case _ => artifact.name + "_unknown"+artifact.extension // e.g. TravisCI builds
       }
     },
     version := {  // set version for built artifacts, including docker
@@ -38,6 +39,7 @@ object GFPackagerPlugin extends AutoPlugin {
         case featPat(f) => f+"_"+commit
         case s if s.startsWith("hotfix/") => ("git describe --always --tag".!!).trim + "_PATCH"
         case relPat(r) => r+"_"+commit+"_RC"
+        case _ => commit+"_unknown"  // e.g. TravisCI build
     }}
   )
 }
