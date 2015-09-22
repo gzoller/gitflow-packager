@@ -22,7 +22,7 @@ If you are building Docker images with sbt-native-packager then the Docker image
 Include it in your projects by adding the following to your project's plugins.sbt file:
 
     resolvers += Resolver.url("co.blocke ivy resolver", url("http://dl.bintray.com/blocke/releases/"))(Resolver.ivyStylePatterns)
-    addSbtPlugin("co.blocke" % "gitflow-packager" % "0.1.1")
+    addSbtPlugin("co.blocke" % "gitflow-packager" % "0.1.2")
 
 Remember *not* to define the version setting in your project!  This plugin will do that for you.  When you want to cut a labeled release, do that with git-flow (or hubflow) and the plugin will key off that version:
 

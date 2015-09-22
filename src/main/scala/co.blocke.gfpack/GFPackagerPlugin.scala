@@ -31,6 +31,13 @@ object GFPackagerPlugin extends AutoPlugin {
         case _ => artifact.name + "_unknown"+artifact.extension // e.g. TravisCI builds
       }
     },
+    // Need this one because newer sbt won't over-write stuff in ivy repo unless its a snapshot.
+    isSnapshot := {
+      "git rev-parse --abbrev-ref HEAD".!! trim match {
+         case "master" => false
+         case _        => true
+      }
+    },
     version := {  // set version for built artifacts, including docker
       val commit = "git rev-parse --verify HEAD".!! take(COMMIT_SIZE)
       "git rev-parse --abbrev-ref HEAD".!! trim match {
