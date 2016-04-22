@@ -2,7 +2,7 @@ sbtPlugin := true
 
 scalaVersion in Global := "2.10.5"
 
-version := "0.1.2"
+version := "0.1.3"
 
 name := "gitflow-packager"
 

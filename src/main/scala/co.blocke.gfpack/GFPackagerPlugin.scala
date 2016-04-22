@@ -19,16 +19,16 @@ object GFPackagerPlugin extends AutoPlugin {
       "git rev-parse --abbrev-ref HEAD".!! trim match {
         case "master"  => {
           val masterVer = ("git describe --always --tag".!!).trim
-          artifact.name + "-" + masterVer + "." + artifact.extension
+          artifact.name + "-" + masterVer + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
         }
-        case "develop" => artifact.name + s"-$commit-SNAPSHOT." + artifact.extension
-        case s if s.startsWith("feature/") => artifact.name + s"-$commit." + artifact.extension
+        case "develop" => artifact.name + s"-$commit-SNAPSHOT" + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
+        case s if s.startsWith("feature/") => artifact.name + s"-$commit" + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
         case s if s.startsWith("hotfix/") => {
           val masterVer = ("git describe --always --tag".!!).trim
-          artifact.name + s"-$masterVer-PATCH." + artifact.extension
+          artifact.name + s"-$masterVer-PATCH" + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
         }
-        case relPat(r) => artifact.name + s"-$r-$commit-RC." + artifact.extension
-        case _ => artifact.name + "_unknown"+artifact.extension // e.g. TravisCI builds
+        case relPat(r) => artifact.name + s"-$r-$commit-RC" + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
+        case _ => artifact.name + "_unknown" + artifact.classifier.map(c => s"-$c").getOrElse("") + "."+artifact.extension // e.g. TravisCI builds
       }
     },
     // Need this one because newer sbt won't over-write stuff in ivy repo unless its a snapshot.
