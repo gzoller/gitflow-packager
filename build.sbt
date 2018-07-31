@@ -1,13 +1,13 @@
 lazy val unusedWarnings = Seq("-Ywarn-unused-import", "-Ywarn-unused")
 
 lazy val commonSettings: Seq[Setting[_]] = Seq(
-	version in ThisBuild := "0.1.5",
+	version in ThisBuild := "0.1.6",
     organization in ThisBuild := "co.blocke",
     homepage in ThisBuild := Some(url(s"https://github.com/gzoller/${name.value}/Readme.md")),
     licenses in ThisBuild := Seq("MIT" -> url(s"https://github.com/gzoller/${name.value}/LICENSE")),
     description in ThisBuild := "name jars and Docker according to gitflow branching scheme",
     scmInfo in ThisBuild := Some(ScmInfo(url(s"https://github.com/gzoller/${name.value}"), s"git@github.com:gzoller/${name.value}.git")),
-    scalaVersion := (crossScalaVersions in ThisBuild).value.last,
+    scalaVersion                := "2.12.6",
     scalacOptions ++= Seq(Opts.compile.deprecation, "-Xlint", "-feature"),
     scalacOptions ++= PartialFunction.condOpt(CrossVersion.partialVersion(scalaVersion.value)){
       case Some((2, v)) if v >= 11 => unusedWarnings
@@ -23,7 +23,7 @@ lazy val commonSettings: Seq[Setting[_]] = Seq(
   )
 
 resolvers += Resolver.sonatypeRepo("releases")
-addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.0")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.3.6")
 
 lazy val root = (project in file("."))
   .settings(
