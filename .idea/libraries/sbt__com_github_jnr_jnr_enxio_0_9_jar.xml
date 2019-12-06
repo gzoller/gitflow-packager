@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="sbt: com.github.jnr:jnr-enxio:0.9:jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.ivy2/cache/com.github.jnr/jnr-enxio/jars/jnr-enxio-0.9.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/com/github/jnr/jnr-enxio/0.9/jnr-enxio-0.9.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

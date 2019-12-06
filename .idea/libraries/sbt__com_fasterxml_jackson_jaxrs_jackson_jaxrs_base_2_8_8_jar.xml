@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="sbt: com.fasterxml.jackson.jaxrs:jackson-jaxrs-base:2.8.8:jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.ivy2/cache/com.fasterxml.jackson.jaxrs/jackson-jaxrs-base/bundles/jackson-jaxrs-base-2.8.8.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/com/fasterxml/jackson/jaxrs/jackson-jaxrs-base/2.8.8/jackson-jaxrs-base-2.8.8.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

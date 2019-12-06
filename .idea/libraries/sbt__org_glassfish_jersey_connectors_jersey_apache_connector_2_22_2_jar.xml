@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="sbt: org.glassfish.jersey.connectors:jersey-apache-connector:2.22.2:jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.ivy2/cache/org.glassfish.jersey.connectors/jersey-apache-connector/jars/jersey-apache-connector-2.22.2.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/glassfish/jersey/connectors/jersey-apache-connector/2.22.2/jersey-apache-connector-2.22.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

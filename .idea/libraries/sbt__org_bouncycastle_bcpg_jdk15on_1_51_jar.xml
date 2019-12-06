@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="sbt: org.bouncycastle:bcpg-jdk15on:1.51:jar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.ivy2/cache/org.bouncycastle/bcpg-jdk15on/jars/bcpg-jdk15on-1.51.jar!/" />
+      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/bouncycastle/bcpg-jdk15on/1.51/bcpg-jdk15on-1.51.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="sbt 1" modules="gitflow-packager_5286" />
+    <profile name="sbt 1" modules="gitflow-packager_9192" />
     <profile name="sbt 2" modules="gitflow-packager">
       <option name="deprecationWarnings" value="true" />
       <option name="featureWarnings" value="true" />
