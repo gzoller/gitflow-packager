@@ -3,7 +3,7 @@ lazy val unusedWarnings = Seq("-Ywarn-unused-import", "-Ywarn-unused")
 lazy val crossVersions = crossScalaVersions := Seq("2.12.9", "2.13.1")
 
 lazy val commonSettings: Seq[Setting[_]] = Seq(
-  version in ThisBuild := "0.1.8",
+  version in ThisBuild := "0.1.9",
   organization in ThisBuild := "co.blocke",
   homepage in ThisBuild := Some(
     url(s"https://github.com/gzoller/${name.value}/Readme.md")
