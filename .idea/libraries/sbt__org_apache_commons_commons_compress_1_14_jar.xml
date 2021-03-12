@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="sbt: org.apache.commons:commons-compress:1.14:jar">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/org/apache/commons/commons-compress/1.14/commons-compress-1.14.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

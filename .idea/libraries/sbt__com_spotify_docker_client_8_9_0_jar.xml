@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="sbt: com.spotify:docker-client:8.9.0:jar">
-    <CLASSES>
-      <root url="jar://$USER_HOME$/.coursier/cache/v1/https/repo1.maven.org/maven2/com/spotify/docker-client/8.9.0/docker-client-8.9.0.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
