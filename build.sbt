@@ -18,8 +18,10 @@ lazy val commonSettings: Seq[Setting[_]] = Seq(
 )
 
 lazy val root = (project in file("."))
+  .enablePlugins(SbtPlugin)
   .settings(
     commonSettings,
     sbtPlugin := true,
-    name := "gitflow-packager"
+    name := "gitflow-packager",
+    moduleName := "gitflow-packager"
   )
