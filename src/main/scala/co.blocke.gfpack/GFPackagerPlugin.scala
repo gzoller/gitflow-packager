@@ -44,7 +44,9 @@ object GFPackagerPlugin extends AutoPlugin {
         // This happens for github actions where the version is given in an Env variable
         case _ if getEnvVersion.isDefined => artifact.name + "-" + getEnvVersion.get + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
 
-        case _ => artifact.name + "_unknown" + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension // e.g. TravisCI builds
+        case branch => 
+          println(">>> Unknown gitflow branch: "+branch)
+          artifact.name + "_unknown" + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension // e.g. TravisCI builds
       }
     },
     // Need this one because newer sbt won't over-write stuff in ivy repo unless its a snapshot.
