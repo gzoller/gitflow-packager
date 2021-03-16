@@ -21,5 +21,6 @@ lazy val root = (project in file("."))
   .settings(
     commonSettings,
     sbtPlugin := true,
-    name := "gitflow-packager"
+    name := "gitflow-packager",
+    publishMavenStyle := false
   )
