@@ -28,7 +28,9 @@ object GFPackagerPlugin extends AutoPlugin {
   override lazy val projectSettings = Seq(
     artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
       val commit = "git rev-parse --verify HEAD".!! take (COMMIT_SIZE)
-      "git rev-parse --abbrev-ref HEAD".!! trim match {
+      println("!!! Branch: "+ "git branch --show-current".!!)
+      "git branch --show-current".!! trim match {
+      // "git rev-parse --abbrev-ref HEAD".!! trim match {
         case "master" | "main" => {
           val masterVer = (getLatestTag.!!).trim
           artifact.name + "-" + masterVer + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
