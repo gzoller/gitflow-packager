@@ -32,7 +32,7 @@ object GFPackagerPlugin extends AutoPlugin {
         case "HEAD" => 
           val env = System.getenv()
           println("ENV: "+env)
-          artifac.name + "_bogus"
+          artifact.name + "_bogus"
         case "master" | "main" => {
           val masterVer = (getLatestTag.!!).trim
           artifact.name + "-" + masterVer + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
