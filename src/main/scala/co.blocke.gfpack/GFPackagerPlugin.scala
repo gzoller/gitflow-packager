@@ -28,10 +28,10 @@ object GFPackagerPlugin extends AutoPlugin {
 
   val isGitHubAction = {
     val isAction = System.getenv("GITHUB_ACTIONS")
-    if (isAction == null || isAction == "")
+    if isAction != "true"
       false
     else
-      isAction 
+      true
   }
 
   override lazy val projectSettings = Seq(
