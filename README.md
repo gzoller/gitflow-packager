@@ -21,7 +21,7 @@ If you are building Docker images with sbt-native-packager then the Docker image
 
 Include it in your projects by adding the following to your project's plugins.sbt file:
 
-    addSbtPlugin("co.blocke" % "gitflow-packager" % "0.1.7")
+    addSbtPlugin("co.blocke" % "gitflow-packager" % "0.1.27")
 
 Remember *not* to define the version setting in your project!  This plugin will do that for you.  When you want to cut a labeled release, do that with git-flow (or hubflow) and the plugin will key off that version:
 
