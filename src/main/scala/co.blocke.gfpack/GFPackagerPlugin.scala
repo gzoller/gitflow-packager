@@ -62,18 +62,19 @@ object GFPackagerPlugin extends AutoPlugin {
           println(">>> Unknown gitflow branch: "+branch)
           artifact.name + "_unknown" + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension // e.g. TravisCI builds
       }
-    }/*,
+    },
     // Need this one because newer sbt won't over-write stuff in ivy repo unless its a snapshot.
     isSnapshot := {
       "git rev-parse --abbrev-ref HEAD".!! trim match {
-        case "master" => false
+        case "master" | "main" => false
+        case "HEAD" if isGitHubAction && System.getenv("GITHUB_REF").startsWith("refs/tags/") => false
         case _ => true
       }
     },
     version := { // set version for built artifacts, including docker
       val commit = "git rev-parse --verify HEAD".!! take (COMMIT_SIZE)
       "git rev-parse --abbrev-ref HEAD".!! trim match {
-        case "master" => getLatestTag.!! trim
+        case "master" | "main" => getLatestTag.!! trim
         case "develop" => commit + "_SNAPSHOT"
         case featPat(f) => f + "_" + commit
         case s if s.startsWith("hotfix/") => (getLatestTag.!!).trim + "_PATCH"
@@ -82,7 +83,12 @@ object GFPackagerPlugin extends AutoPlugin {
         // This happens for github actions where the version is given in an Env variable
         case _ if getEnvVersion.isDefined => getEnvVersion.get
 
+        // GitHub release (detached HEAD)
+        case "HEAD" if isGitHubAction && System.getenv("GITHUB_REF").startsWith("refs/tags/") => 
+          val headPat(masterVer) = System.getenv("GITHUB_REF")
+          masterVer
+
         case _ => commit + "_unknown" // e.g. TravisCI build
       }
-    }*/)
+    })
 }
