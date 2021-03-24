@@ -53,7 +53,8 @@ object GFPackagerPlugin extends AutoPlugin {
         // This happens for github actions where the version is given in an Env variable
         case _ if getEnvVersion.isDefined => artifact.name + "-" + getEnvVersion.get + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
 
-        case "HEAD" if isGitHubAction => 
+        // GitHub workflow (actions) -- normal case with detached HEAD
+        case "HEAD" if isGitHubAction && System.getenv("GITHUB_REF").startsWith("refs/tags/") => 
           val headPat(masterVer) = System.getenv("GITHUB_REF")
           artifact.name + "-" + masterVer + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
 
