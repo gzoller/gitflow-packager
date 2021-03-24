@@ -28,7 +28,7 @@ object GFPackagerPlugin extends AutoPlugin {
 
   val isGitHubAction = {
     val isAction = System.getenv("GITHUB_ACTIONS")
-    if isAction != "true"
+    if (isAction != "true")
       false
     else
       true
