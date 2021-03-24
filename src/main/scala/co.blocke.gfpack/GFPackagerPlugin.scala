@@ -62,7 +62,7 @@ object GFPackagerPlugin extends AutoPlugin {
           println(">>> Unknown gitflow branch: "+branch)
           artifact.name + "_unknown" + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension // e.g. TravisCI builds
       }
-    },
+    }/*,
     // Need this one because newer sbt won't over-write stuff in ivy repo unless its a snapshot.
     isSnapshot := {
       "git rev-parse --abbrev-ref HEAD".!! trim match {
@@ -84,5 +84,5 @@ object GFPackagerPlugin extends AutoPlugin {
 
         case _ => commit + "_unknown" // e.g. TravisCI build
       }
-    })
+    }*/)
 }
