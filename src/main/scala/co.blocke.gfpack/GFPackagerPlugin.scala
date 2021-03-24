@@ -14,6 +14,7 @@ object GFPackagerPlugin extends AutoPlugin {
   val COMMIT_SIZE = 6
   val relPat = "release/(.*)".r
   val featPat = "feature/(.*)".r
+  val headPat = "refs/tags/(.*)".r
 
   private def getLatestTag = "git describe --abbrev=0 --tag"
 
@@ -25,14 +26,18 @@ object GFPackagerPlugin extends AutoPlugin {
       Some(envVersion)
   }
 
+  val isGitHubAction = {
+    val isAction = System.getenv("GITHUB_ACTIONS")
+    if (isAction == null || isAction == "")
+      false
+    else
+      isAction 
+  }
+
   override lazy val projectSettings = Seq(
     artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
       val commit = "git rev-parse --verify HEAD".!! take (COMMIT_SIZE)
       "git rev-parse --abbrev-ref HEAD".!! trim match {
-        case "HEAD" => 
-          val env = System.getenv()
-          println("ENV: "+env)
-          artifact.name + "_bogus"
         case "master" | "main" => {
           val masterVer = (getLatestTag.!!).trim
           artifact.name + "-" + masterVer + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
@@ -47,6 +52,10 @@ object GFPackagerPlugin extends AutoPlugin {
 
         // This happens for github actions where the version is given in an Env variable
         case _ if getEnvVersion.isDefined => artifact.name + "-" + getEnvVersion.get + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
+
+        case "HEAD" && isGitHubAction => 
+          val headPat(masterVer) = System.getenv("GITHUB_REF")
+          artifact.name + "-" + masterVer + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
 
         case branch => 
           println(">>> Unknown gitflow branch: "+branch)
