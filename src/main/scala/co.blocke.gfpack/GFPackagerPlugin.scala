@@ -12,12 +12,16 @@ object GFPackagerPlugin extends AutoPlugin {
   override def trigger = allRequirements
 
   val COMMIT_SIZE = 6
-  val relPat = "release/(.*)".r
-  val featPat = "feature/(.*)".r
-  val headPat = "refs/tags/(.*)".r
-  val StartWithV = "(v.*)".r
+  val relPat = "release/v?(.*)".r
+  val featPat = "feature/v?(.*)".r
+  val headPat = "refs/tags/v?(.*)".r
+  val StartWithV = "v?(.*)".r
 
   private def getLatestTag = "git describe --abbrev=0 --tag"
+
+  val latestTag = getLatestTag.!! trim match {
+    case StartWithV(tag) => tag // The sbt-typelevel-sonatype-ci-release plugin likes version tags to start with 'v'
+  }
 
   private def getEnvVersion: Option[String] = {
     val envVersion = System.getenv("BUILD_VERSION")
@@ -95,15 +99,10 @@ object GFPackagerPlugin extends AutoPlugin {
     version := { // set version for built artifacts, including docker
       val commit = "git rev-parse --verify HEAD".!! take (COMMIT_SIZE)
       "git rev-parse --abbrev-ref HEAD".!! trim match {
-        case "master" | "main" => {
-          getLatestTag.!! trim match {
-            case StartWithV(tag) => tag.tail // The sbt-typelevel-sonatype-ci-release plugin likes version tags to start with 'v'
-            case tag => tag
-          }
-        }
+        case "master" | "main" => latestTag
         case "develop" => commit + "_SNAPSHOT"
         case featPat(f) => f + "_" + commit
-        case s if s.startsWith("hotfix/") => (getLatestTag.!!).trim + "_PATCH"
+        case s if s.startsWith("hotfix/") => latestTag + "_PATCH"
         case relPat(r) => r + "_" + commit + "_RC"
 
         // This happens for github actions where the version is given in an Env variable
