@@ -1,1 +1,2 @@
-addSbtPlugin("com.geirsson" % "sbt-ci-release" % "1.5.6")
+addSbtPlugin("com.github.sbt" % "sbt-ci-release" % "1.5.11")
+

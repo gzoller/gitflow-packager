@@ -13,7 +13,7 @@ inThisBuild(List(
 ))
 
 lazy val commonSettings: Seq[Setting[_]] = Seq(
-  scalaVersion := "2.12.9",
+  scalaVersion := "2.12.13",
   scalacOptions ++= Seq(Opts.compile.deprecation, "-Xlint", "-feature")
 )
 
