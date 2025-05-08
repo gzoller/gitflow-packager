@@ -15,8 +15,6 @@ inThisBuild(List(
   )
 ))
 
-ThisBuild / version := "0.3.0"
-
 ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
 ThisBuild / githubWorkflowScalaVersions := Seq("3.5.2")
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec(Zulu, "21")) // ← uncommented and fixed
