@@ -17,10 +17,16 @@ object GFPackagerPlugin extends AutoPlugin {
   val headPat = "refs/tags/v?(.*)".r
   val StartWithV = "v?(.*)".r
 
-  private def getLatestTag = "git describe --abbrev=0 --tag"
+  private def getLatestTagCmd = "git describe --abbrev=0 --tag"
 
-  val latestTag = getLatestTag.!! trim match {
-    case StartWithV(tag) => tag // The sbt-typelevel-sonatype-ci-release plugin likes version tags to start with 'v'
+  val latestTag: String = try {
+    getLatestTagCmd.!!.trim match {
+      case StartWithV(tag) => tag
+      case tag => s"v$tag" // fallback if tag doesn't start with v
+    }
+  } catch {
+    case _: Throwable =>
+      "v0.0.0-untagged" // fallback version for branches with no tags
   }
 
   private def getEnvVersion: Option[String] = {
@@ -46,7 +52,7 @@ object GFPackagerPlugin extends AutoPlugin {
       val finalArtifactName = thisBranch trim match {
         case "master" | "main" => {
           println("::: Packager - Main Branch: " + artifact.name + " :::")
-          val masterVer = (getLatestTag.!!).trim
+          val masterVer = (getLatestTagCmd.!!).trim
           artifact.name + "-" + masterVer + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
         }
         case "develop" => {
@@ -59,7 +65,7 @@ object GFPackagerPlugin extends AutoPlugin {
         }
         case s if s.startsWith("hotfix/") => {
           println("::: Packager - Hotfix Branch: " + artifact.name + " :::")
-          val masterVer = (getLatestTag.!!).trim
+          val masterVer = (getLatestTagCmd.!!).trim
           artifact.name + s"-$masterVer-PATCH" + artifact.classifier.map(c => s"-$c").getOrElse("") + "." + artifact.extension
         }
         case relPat(r) => {
