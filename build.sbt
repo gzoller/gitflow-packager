@@ -22,20 +22,18 @@ ThisBuild / githubWorkflowOSes := Seq("ubuntu-latest", "windows-latest")
 ThisBuild / githubWorkflowPublishTargetBranches := Seq(
   RefPredicate.StartsWith(Ref.Tag("v"))                        // <-- enables tag-based publishing
 )
-ThisBuild / version := {
-  val tag = sys.process.Process("git describe --tags --exact-match").!!.trim
-  if (tag.startsWith("v"))
-    tag.drop(1)
-  else
-    tag
-}
+
 ThisBuild / githubWorkflowPublishTargetBranches := Seq(
   RefPredicate.StartsWith(Ref.Tag("v"))
 )
 
 ThisBuild / githubWorkflowJobSetup := Seq(
   WorkflowStep.Use(
-    UseRef.Public("actions", "checkout", "v4")
+    UseRef.Public("actions", "checkout", "v4"),
+    params = Map(
+      "fetch-depth" -> "3",  // get full history
+      "fetch-tags" -> "true" // ensure tags are available
+    )
   ),
   WorkflowStep.Use(
     UseRef.Public("coursier", "setup-action", "v1")
