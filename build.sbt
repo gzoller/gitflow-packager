@@ -1,6 +1,5 @@
 import xerial.sbt.Sonatype.sonatypeCentralHost
-import sbtghactions.JavaSpec
-import sbtghactions.JavaSpec.Distribution
+import org.typelevel.sbt.gha.JavaSpec.Distribution
 
 inThisBuild(List(
   organization := "co.blocke",
@@ -13,53 +12,67 @@ inThisBuild(List(
       "gzoller@outlook.com",
       url("http://www.blocke.co")
     )
+  ),
+  sonatypeCredentialHost := sonatypeCentralHost,
+  githubWorkflowJavaVersions := Seq(JavaSpec(Distribution.Temurin, "21")),
+  githubWorkflowScalaVersions := Seq("2.12.18"),
+  githubWorkflowOSes := Seq("ubuntu-latest", "windows-latest"),
+
+  // Only publish on version tag push (e.g. v0.3.0)
+  githubWorkflowPublishTargetBranches := Seq(
+    RefPredicate.StartsWith(Ref.Tag("v"))
+  ),
+
+  // GitHub Actions setup: checkout + coursier + sbt install
+  githubWorkflowJobSetup := Seq(
+    WorkflowStep.Use(
+      ref = UseRef.Public("actions", "checkout", "v4"),
+      params = Map(
+        "fetch-depth" -> "0",
+        "fetch-tags" -> "true"
+      )
+    ),
+    WorkflowStep.Use(
+      ref = UseRef.Public("coursier", "setup-action", "v1")
+    ),
+    WorkflowStep.Run(
+      name = Some("Install sbt"),
+      commands = List(
+        "cs install sbt",
+        "echo \"$HOME/.local/share/coursier/bin\" >> $GITHUB_PATH",
+        "sbt sbtVersion"
+      )
+    )
+  ),
+
+  // Disable auto-upload step because we define our own
+  githubWorkflowArtifactUpload := false,
+
+  // Custom publish steps (download artifacts + publish)
+  githubWorkflowPublish := Seq(
+    WorkflowStep.Use(
+      ref = UseRef.Public("actions", "download-artifact", "v4"),
+      name = Some("Download target directories"),
+      params = Map(
+        "name" -> "target-${{ matrix.os }}-${{ matrix.java }}-${{ matrix.scala }}"
+      )
+    ),
+    WorkflowStep.Run(
+      name = Some("Inflate target directories"),
+      commands = List("tar xf targets.tar", "rm targets.tar")
+    ),
+    WorkflowStep.Sbt(
+      commands = List("ci-release"),
+      env = Map(
+        "PGP_PASSPHRASE" -> "${{ secrets.PGP_PASSPHRASE }}",
+        "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
+        "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
+        "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}",
+        "CI_SNAPSHOT_RELEASE" -> "+publishSigned"
+      )
+    )
   )
 ))
-
-ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
-ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec(Distribution.Temurin, "21"))
-ThisBuild / githubWorkflowOSes := Seq("ubuntu-latest", "windows-latest")
-ThisBuild / githubWorkflowPublishTargetBranches := Seq(
-  RefPredicate.StartsWith(Ref.Tag("v"))                        // <-- enables tag-based publishing
-)
-
-ThisBuild / githubWorkflowPublishTargetBranches := Seq(
-  RefPredicate.StartsWith(Ref.Tag("v"))
-)
-
-ThisBuild / githubWorkflowJobSetup := Seq(
-  WorkflowStep.Use(
-    UseRef.Public("actions", "checkout", "v4"),
-    params = Map(
-      "fetch-depth" -> "0",  // get full history
-      "fetch-tags" -> "true" // ensure tags are available
-    )
-  ),
-  WorkflowStep.Use(
-    UseRef.Public("coursier", "setup-action", "v1")
-  ),
-  WorkflowStep.Run(
-    name = Some("Install sbt"),
-    commands = List(
-      "cs install sbt",
-      "echo \"$HOME/.local/share/coursier/bin\" >> $GITHUB_PATH",
-      "sbt sbtVersion"
-    )
-  )
-)
-
-ThisBuild / githubWorkflowPublish := Seq(
-  WorkflowStep.Sbt(
-    List("ci-release"),
-    env = Map(
-      "PGP_PASSPHRASE" -> "${{ secrets.PGP_PASSPHRASE }}",
-      "PGP_SECRET" -> "${{ secrets.PGP_SECRET }}",
-      "SONATYPE_PASSWORD" -> "${{ secrets.SONATYPE_PASSWORD }}",
-      "SONATYPE_USERNAME" -> "${{ secrets.SONATYPE_USERNAME }}",
-      "CI_SNAPSHOT_RELEASE" -> "+publishSigned"
-    )
-  )
-)
 
 lazy val commonSettings: Seq[Setting[_]] = Seq(
   scalaVersion := "2.12.18",
@@ -75,6 +88,7 @@ lazy val root = (project in file("."))
     moduleName := "gitflow-packager"
   )
 
+
 /*
 # 1. Push code to master first
 git checkout master
@@ -82,8 +96,8 @@ git pull
 git push origin master     # 🔁 code is on master, no publish yet
 
 # 2. Create tag from master commit (not from a feature branch!)
-git tag v0.3.0           # ⏱️ version tag must match sbt version
+git tag v0.3.0             # ⏱️ version tag must match sbt version
 
 # 3. Push just the tag
-git push origin v0.3.0   # ✅ triggers publish
+git push origin v0.3.0     # ✅ triggers publish
  */
