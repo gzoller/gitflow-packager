@@ -1,5 +1,6 @@
 import xerial.sbt.Sonatype.sonatypeCentralHost
-import org.typelevel.sbt.gha.JavaSpec.Distribution.Zulu
+import sbtghactions.JavaSpec
+import sbtghactions.JavaSpec.Distribution
 
 inThisBuild(List(
   organization := "co.blocke",
@@ -16,7 +17,7 @@ inThisBuild(List(
 ))
 
 ThisBuild / sonatypeCredentialHost := sonatypeCentralHost
-ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec(Zulu, "21")) // ← uncommented and fixed
+ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec(Distribution.Temurin, "21"))
 ThisBuild / githubWorkflowOSes := Seq("ubuntu-latest", "windows-latest")
 ThisBuild / githubWorkflowPublishTargetBranches := Seq(
   RefPredicate.StartsWith(Ref.Tag("v"))                        // <-- enables tag-based publishing
