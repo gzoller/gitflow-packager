@@ -74,6 +74,15 @@ inThisBuild(List(
   )
 ))
 
+ThisBuild / versionScheme := Some("semver-spec")
+
+ThisBuild / scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/gzoller/gitflow-packager"),
+    "scm:git@github.com:gzoller/gitflow-packager.git"
+  )
+)
+
 lazy val commonSettings: Seq[Setting[_]] = Seq(
   scalaVersion := "2.12.18",
   scalacOptions ++= Seq(Opts.compile.deprecation, "-Xlint", "-feature")
