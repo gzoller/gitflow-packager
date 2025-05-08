@@ -20,7 +20,6 @@ ThisBuild / githubWorkflowScalaVersions := Seq("3.5.2")
 ThisBuild / githubWorkflowJavaVersions := Seq(JavaSpec(Zulu, "21")) // ← uncommented and fixed
 ThisBuild / githubWorkflowOSes := Seq("ubuntu-latest", "windows-latest")
 ThisBuild / githubWorkflowPublishTargetBranches := Seq(
-  RefPredicate.Equals(Ref.Branch("master")),                     // optional
   RefPredicate.StartsWith(Ref.Tag("v"))                        // <-- enables tag-based publishing
 )
 ThisBuild / version := {
