@@ -30,7 +30,7 @@ ThisBuild / githubWorkflowJobSetup := Seq(
   WorkflowStep.Use(
     UseRef.Public("actions", "checkout", "v4"),
     params = Map(
-      "fetch-depth" -> "3",  // get full history
+      "fetch-depth" -> "0",  // get full history
       "fetch-tags" -> "true" // ensure tags are available
     )
   ),
