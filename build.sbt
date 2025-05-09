@@ -84,12 +84,6 @@ ThisBuild / scmInfo := Some(
   )
 )
 
-ThisBuild / crossPaths := false
-ThisBuild / publishMavenStyle := true
-ThisBuild / artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
-  s"${module.name}-${module.revision}.${artifact.extension}"
-}
-
 lazy val commonSettings: Seq[Setting[_]] = Seq(
   scalaVersion := "2.12.18",
   scalacOptions ++= Seq(Opts.compile.deprecation, "-Xlint", "-feature")
