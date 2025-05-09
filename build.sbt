@@ -84,6 +84,10 @@ ThisBuild / scmInfo := Some(
   )
 )
 
+// Disable normal publishing, b/c this is a plugin!
+ThisBuild / publishArtifact := false
+ThisBuild / publishArtifact in Test := false
+
 lazy val commonSettings: Seq[Setting[_]] = Seq(
   scalaVersion := "2.12.18",
   scalacOptions ++= Seq(Opts.compile.deprecation, "-Xlint", "-feature")
