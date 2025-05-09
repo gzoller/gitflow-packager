@@ -74,6 +74,7 @@ inThisBuild(List(
   )
 ))
 
+// Stuff to make Central Portal happy
 ThisBuild / versionScheme := Some("semver-spec")
 
 ThisBuild / scmInfo := Some(
@@ -82,6 +83,12 @@ ThisBuild / scmInfo := Some(
     "scm:git@github.com:gzoller/gitflow-packager.git"
   )
 )
+
+ThisBuild / crossPaths := false
+ThisBuild / publishMavenStyle := true
+ThisBuild / artifactName := { (sv: ScalaVersion, module: ModuleID, artifact: Artifact) =>
+  s"${module.name}-${module.revision}.${artifact.extension}"
+}
 
 lazy val commonSettings: Seq[Setting[_]] = Seq(
   scalaVersion := "2.12.18",
